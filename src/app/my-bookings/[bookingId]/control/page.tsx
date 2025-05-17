@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, AlertTriangle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import { Card } from "@/components/ui/card"; // Added import
 
 export default function RoomControlPage() {
   const { user, loading: authLoading } = useAuth();
