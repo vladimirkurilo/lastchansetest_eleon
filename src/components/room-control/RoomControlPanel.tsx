@@ -3,7 +3,6 @@
 
 import type { RoomControllerState, ControllerCommands } from "@/lib/types";
 import { LightStates, DoorLockStates, ChannelStates } from "@/lib/types";
-import { mockRoomControllerStates } from "@/lib/mock-data";
 import React, { useState, useEffect, useCallback } from "react";
 import { DeviceControl } from "./DeviceControl";
 import { Lightbulb, LightbulbOff, DoorOpen, DoorClosed, Zap, Thermometer, Droplets, Gauge, WifiOff } from "lucide-react";
@@ -13,57 +12,34 @@ import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface RoomControlPanelProps {
-  roomId: string; // This would be the actual room ID to control
+  roomId: string;
   bookingId: string;
 }
 
-// Mock API functions
-async function getRoomState(roomId: string): Promise<RoomControllerState> {
-  console.log(`API: Fetching state for room ${roomId}`);
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const state = mockRoomControllerStates[roomId];
-      if (state) {
-        resolve(state);
-      } else {
-        // Simulate an error if room state is not found
-        // reject(new Error(`State for room ${roomId} not found.`));
-        // For demo, return a default state to avoid breaking UI
-        console.warn(`State for room ${roomId} not found, returning default.`);
-        resolve({
-            light_on: LightStates.Off,
-            door_lock: DoorLockStates.Close,
-            channel_1: ChannelStates.ChannelOff,
-            channel_2: ChannelStates.ChannelOff,
-            temperature: 20,
-            pressure: 1000,
-            humidity: 50,
-        });
-      }
-    }, 1000);
-  });
+async function fetchRoomStateFromAPI(roomId: string): Promise<RoomControllerState> {
+  console.log(`API Call: Fetching state for room ${roomId}`);
+  const response = await fetch(`/api/room/${roomId}/state`);
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: "Failed to fetch room state" }));
+    throw new Error(errorData.message || `Network response was not ok: ${response.statusText}`);
+  }
+  return response.json();
 }
 
-async function setDeviceState(roomId: string, command: ControllerCommands): Promise<{ success: boolean }> {
-  console.log(`API: Setting state for room ${roomId}, command: ${ControllerCommands[command]}`);
-  // Simulate updating mock data (in a real app, this updates the backend/device)
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (mockRoomControllerStates[roomId]) {
-        switch (command) {
-          case ControllerCommands.LightOn: mockRoomControllerStates[roomId].light_on = LightStates.On; break;
-          case ControllerCommands.LightOff: mockRoomControllerStates[roomId].light_on = LightStates.Off; break;
-          case ControllerCommands.DoorLockOpen: mockRoomControllerStates[roomId].door_lock = DoorLockStates.Open; break;
-          case ControllerCommands.DoorLockClose: mockRoomControllerStates[roomId].door_lock = DoorLockStates.Close; break;
-          case ControllerCommands.Channel1On: mockRoomControllerStates[roomId].channel_1 = ChannelStates.ChannelOn; break;
-          case ControllerCommands.Channel1Off: mockRoomControllerStates[roomId].channel_1 = ChannelStates.ChannelOff; break;
-          case ControllerCommands.Channel2On: mockRoomControllerStates[roomId].channel_2 = ChannelStates.ChannelOn; break;
-          case ControllerCommands.Channel2Off: mockRoomControllerStates[roomId].channel_2 = ChannelStates.ChannelOff; break;
-        }
-      }
-      resolve({ success: true });
-    }, 700);
+async function sendCommandToAPI(roomId: string, command: ControllerCommands): Promise<{ success: boolean; state?: RoomControllerState; message?: string }> {
+  console.log(`API Call: Setting state for room ${roomId}, command: ${ControllerCommands[command]}`);
+  const response = await fetch(`/api/room/${roomId}/command`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ command }),
   });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: "Failed to send command" }));
+    throw new Error(errorData.message || `Network response was not ok: ${response.statusText}`);
+  }
+  return response.json();
 }
 
 
@@ -77,16 +53,16 @@ export function RoomControlPanel({ roomId, bookingId }: RoomControlPanelProps) {
     setLoadingStates(prev => ({ ...prev, global: true }));
     setError(null);
     try {
-      const state = await getRoomState(roomId);
+      const state = await fetchRoomStateFromAPI(roomId);
       setRoomState(state);
     } catch (err) {
       console.error("Failed to fetch room state:", err);
-      setError("Failed to connect to room controller. Some controls may not be available.");
-      // Set a default state or leave as null depending on desired UX
-      setRoomState(null); // Or a default state structure
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred while fetching room state.";
+      setError(`Failed to connect to room controller. ${errorMessage}`);
+      setRoomState(null);
       toast({
         title: "Connection Error",
-        description: "Could not retrieve room status. Please try again.",
+        description: `Could not retrieve room status. ${errorMessage}`,
         variant: "destructive",
       });
     } finally {
@@ -96,23 +72,29 @@ export function RoomControlPanel({ roomId, bookingId }: RoomControlPanelProps) {
 
   useEffect(() => {
     fetchState();
-    // Polling for updates (optional, consider WebSockets for real-time)
     const intervalId = setInterval(fetchState, 5000); // Poll every 5 seconds
     return () => clearInterval(intervalId);
   }, [fetchState]);
 
   const handleControlAction = async (deviceId: string, command: ControllerCommands, successMessage: string) => {
     setLoadingStates(prev => ({ ...prev, [deviceId]: true }));
-    const result = await setDeviceState(roomId, command);
-    if (result.success) {
-      // Optimistic update or refetch state
-      const newState = await getRoomState(roomId); // Refetch to confirm
-      setRoomState(newState);
-      toast({ title: "Success", description: successMessage });
-    } else {
-      toast({ title: "Error", description: `Failed to update ${deviceId}.`, variant: "destructive" });
+    try {
+      const result = await sendCommandToAPI(roomId, command);
+      if (result.success && result.state) {
+        setRoomState(result.state);
+        toast({ title: "Success", description: successMessage });
+      } else {
+        toast({ title: "Error", description: result.message || `Failed to update ${deviceId}.`, variant: "destructive" });
+        // Optionally refetch state if command failed but didn't return new state
+        fetchState();
+      }
+    } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : `An unknown error occurred while updating ${deviceId}.`;
+        toast({ title: "Command Error", description: errorMessage, variant: "destructive" });
+        fetchState(); // Refetch state on error
+    } finally {
+        setLoadingStates(prev => ({ ...prev, [deviceId]: false }));
     }
-    setLoadingStates(prev => ({ ...prev, [deviceId]: false }));
   };
 
   const handleToggle = (deviceId: string, newUiState: boolean) => {
@@ -163,7 +145,7 @@ export function RoomControlPanel({ roomId, bookingId }: RoomControlPanelProps) {
      );
   }
   
-  if (error && !roomState) { // Show prominent error if initial fetch failed
+  if (error && !roomState) { 
     return (
       <Alert variant="destructive" className="mb-6">
         <WifiOff className="h-4 w-4" />
@@ -184,7 +166,7 @@ export function RoomControlPanel({ roomId, bookingId }: RoomControlPanelProps) {
         <CardDescription>Manage your room environment. Booking ID: {bookingId}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {error && !loadingStates.global && ( // Show less intrusive error for polling failures if initial data exists
+        {error && !loadingStates.global && roomState && ( 
           <Alert variant="destructive" className="mb-4">
             <WifiOff className="h-4 w-4" />
             <AlertTitle>Connection Issue</AlertTitle>
@@ -202,7 +184,7 @@ export function RoomControlPanel({ roomId, bookingId }: RoomControlPanelProps) {
             type="switch"
             isOn={roomState?.light_on === LightStates.On}
             onToggle={handleToggle}
-            isLoading={loadingStates.light || loadingStates.global}
+            isLoading={loadingStates.light || loadingStates.global && !roomState}
           />
           <DeviceControl
             id="doorLock"
@@ -211,26 +193,26 @@ export function RoomControlPanel({ roomId, bookingId }: RoomControlPanelProps) {
             type="button"
             buttonText={roomState?.door_lock === DoorLockStates.Open ? "Close Door" : "Open Door"}
             onClick={handleDoorLock}
-            isLoading={loadingStates.doorLock || loadingStates.global}
+            isLoading={loadingStates.doorLock || loadingStates.global && !roomState}
             variant={roomState?.door_lock === DoorLockStates.Open ? "destructive" : "default"}
           />
           <DeviceControl
             id="channel1"
-            label="Channel 1"
+            label="Channel 1 (e.g. Outlet)"
             Icon={Zap}
             type="switch"
             isOn={roomState?.channel_1 === ChannelStates.ChannelOn}
             onToggle={handleToggle}
-            isLoading={loadingStates.channel1 || loadingStates.global}
+            isLoading={loadingStates.channel1 || loadingStates.global && !roomState}
           />
           <DeviceControl
             id="channel2"
-            label="Channel 2"
-            Icon={Zap}
+            label="Channel 2 (e.g. Fan)"
+            Icon={Zap} // Consider a more specific icon if available
             type="switch"
             isOn={roomState?.channel_2 === ChannelStates.ChannelOn}
             onToggle={handleToggle}
-            isLoading={loadingStates.channel2 || loadingStates.global}
+            isLoading={loadingStates.channel2 || loadingStates.global && !roomState}
           />
         </div>
         
