@@ -3,6 +3,7 @@
 
 import { RoomControlPanel } from "@/components/room-control/RoomControlPanel";
 import { mockBookings, mockRooms } from "@/lib/mock-data";
+import type { Booking } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -31,14 +32,30 @@ export default function RoomControlPage() {
         return;
       }
 
-      const booking = mockBookings.find(b => b.id === bookingId && b.guestId === user.id);
-      if (!booking) {
-        setError("Booking not found or access denied.");
+      let currentBooking: Booking | undefined = undefined;
+      const storedBookings = localStorage.getItem("eleonUserBookings");
+      
+      if (storedBookings) {
+        try {
+          const allBookings: Booking[] = JSON.parse(storedBookings);
+          currentBooking = allBookings.find(b => b.id === bookingId && b.guestId === user.id);
+        } catch (e) {
+            console.error("Failed to parse bookings from localStorage for control page", e);
+        }
+      }
+      
+      // If not found in localStorage, try mockBookings (e.g. initial data or if localStorage fails)
+      if (!currentBooking) {
+          currentBooking = mockBookings.find(b => b.id === bookingId && b.guestId === user.id);
+      }
+
+      if (!currentBooking) {
+        setError("Booking not found or access denied. This could be because the booking was made in a different session or browser.");
         setIsLoading(false);
         return;
       }
       
-      const room = mockRooms.find(r => r.id === booking.roomId);
+      const room = mockRooms.find(r => r.id === currentBooking!.roomId);
       if (!room) {
         setError("Room details associated with this booking could not be found.");
         setIsLoading(false);
@@ -59,7 +76,7 @@ export default function RoomControlPage() {
         <Skeleton className="h-8 w-40 mb-6" />
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/3">
-            <Skeleton className="h-64 w-full rounded-lg mb-4" />
+            <Skeleton className="aspect-video w-full rounded-lg mb-4" />
             <Skeleton className="h-8 w-3/4 mb-2" />
             <Skeleton className="h-4 w-1/2" />
           </div>
@@ -75,9 +92,9 @@ export default function RoomControlPage() {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
         <AlertTriangle className="mx-auto h-16 w-16 text-destructive mb-4" />
-        <h1 className="text-3xl font-bold text-destructive">{error}</h1>
+        <h1 className="text-3xl font-bold text-destructive mb-2">{error}</h1>
         <p className="mt-4 text-muted-foreground">
-          Please check your booking details or contact support.
+          Please check your booking details or try booking again.
         </p>
         <Button asChild variant="outline" className="mt-6">
           <Link href="/my-bookings">
@@ -89,7 +106,7 @@ export default function RoomControlPage() {
     );
   }
   
-  if (!roomId || !roomName) { // Should be caught by error state, but as a safeguard
+  if (!roomId || !roomName) { 
      return <div className="container mx-auto px-4 py-12 text-center">Error loading room information.</div>;
   }
 
@@ -105,7 +122,7 @@ export default function RoomControlPage() {
 
       <div className="flex flex-col lg:flex-row gap-8">
         <aside className="lg:w-1/3 space-y-6">
-          <div className="bg-card p-6 rounded-lg shadow-lg">
+          <Card className="bg-card p-6 rounded-lg shadow-lg">
             {roomImageUrl && (
                 <div className="relative aspect-video w-full mb-4 rounded-md overflow-hidden">
                     <Image src={roomImageUrl} alt={roomName} fill style={{ objectFit: 'cover' }} data-ai-hint="hotel room comfortable" />
@@ -114,8 +131,7 @@ export default function RoomControlPage() {
             <h1 className="text-3xl font-bold text-primary mb-2">{roomName}</h1>
             <p className="text-sm text-muted-foreground">Room ID: {roomId}</p>
             <p className="text-sm text-muted-foreground">Booking ID: {bookingId}</p>
-          </div>
-           {/* Could add more booking details here if needed */}
+          </Card>
         </aside>
 
         <main className="lg:w-2/3">
@@ -126,10 +142,4 @@ export default function RoomControlPage() {
   );
 }
 
-// export async function generateMetadata({ params }: { params: { bookingId: string } }) {
-//   // In a real app, fetch booking details to get room name for metadata
-//   return {
-//     title: `Room Control | SmartStay`,
-//     description: `Control your room environment for booking ${params.bookingId}.`,
-//   };
-// }
+    
