@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Simulate checking for an existing session
-    const storedUser = localStorage.getItem("smartStayUser");
+    const storedUser = localStorage.getItem("eleonUser"); // Changed key to eleonUser
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -33,18 +33,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const foundUser = mockUsers.find(u => u.email === email && u.role === role);
     if (foundUser) {
       setUser(foundUser);
-      localStorage.setItem("smartStayUser", JSON.stringify(foundUser));
+      localStorage.setItem("eleonUser", JSON.stringify(foundUser)); // Changed key
     } else {
       // Simulate a generic user if not found in mock, for testing
-      const genericUser: User = { id: Date.now().toString(), email, role };
+      const genericUser: User = { id: Date.now().toString(), email, role, name: email.split('@')[0] }; // Added name for generic user
       setUser(genericUser);
-      localStorage.setItem("smartStayUser", JSON.stringify(genericUser));
+      localStorage.setItem("eleonUser", JSON.stringify(genericUser)); // Changed key
     }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("smartStayUser");
+    localStorage.removeItem("eleonUser"); // Changed key
   };
 
   return (

@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SmartStay Hotel Management',
-  description: 'Seamless hotel access and room control.',
+  title: 'ELEON Hotel Management',
+  description: 'Experience the future of hospitality with ELEON.',
 };
 
 export default function RootLayout({

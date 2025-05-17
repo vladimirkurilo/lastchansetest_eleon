@@ -21,7 +21,7 @@ export default async function RoomsPage() {
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl">Explore Our Rooms</h1>
         <p className="mt-3 text-lg text-muted-foreground sm:mt-4">
-          Find the perfect accommodation for your stay. Each room is designed for comfort and convenience.
+          Find the perfect accommodation for your stay at ELEON. Each room is designed for comfort and convenience.
         </p>
       </div>
       
@@ -30,7 +30,7 @@ export default async function RoomsPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input type="search" placeholder="Search rooms by name, type..." className="pl-10 w-full" />
         </div>
-        <Button variant="outline">
+        <Button variant="outline" className="bg-card/80 hover:bg-card">
           <Filter className="mr-2 h-4 w-4" />
           Filters
         </Button>
@@ -60,6 +60,6 @@ export default async function RoomsPage() {
 }
 
 export const metadata = {
-  title: 'Available Rooms | SmartStay',
-  description: 'Browse and book available rooms at SmartStay hotel.',
+  title: 'Available Rooms | ELEON',
+  description: 'Browse and book available rooms at ELEON hotel.',
 };

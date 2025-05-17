@@ -31,7 +31,7 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   const getInitials = (name?: string) => {
-    if (!name) return "SS";
+    if (!name) return "EL"; // ELEON initials
     return name.split(" ").map(n => n[0]).join("").toUpperCase();
   };
   
@@ -39,15 +39,15 @@ export function SiteHeader() {
 
 
   return (
-    <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 shadow-sm">
+    <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background/75 backdrop-blur-lg px-4 md:px-6 shadow-md">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+          <Button variant="outline" size="icon" className="shrink-0 md:hidden bg-background/80 hover:bg-background">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col bg-card">
+        <SheetContent side="left" className="flex flex-col bg-card/95 backdrop-blur-md">
           <nav className="grid gap-2 text-lg font-medium">
             <Logo className="mb-4" />
             {filteredNavLinks.map((link) => (
@@ -56,7 +56,7 @@ export function SiteHeader() {
                 href={link.href}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                  pathname === link.href && "text-primary bg-muted"
+                  pathname === link.href && "text-primary bg-muted/50"
                 )}
               >
                 <link.icon className="h-4 w-4" />
@@ -90,14 +90,14 @@ export function SiteHeader() {
         {!loading && user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-accent/20">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="https://placehold.co/40x40.png" alt={user.name || user.email} data-ai-hint="user avatar" />
                   <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="bg-card/90 backdrop-blur-sm">
               <DropdownMenuLabel>{user.name || user.email} ({user.role})</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
@@ -117,7 +117,7 @@ export function SiteHeader() {
           </DropdownMenu>
         ) : !loading ? (
           <div className="flex gap-2">
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild className="bg-background/70 hover:bg-background">
               <Link href="/login">Login</Link>
             </Button>
             <Button asChild variant="default">
@@ -125,7 +125,7 @@ export function SiteHeader() {
             </Button>
           </div>
         ) : (
-          <div className="h-8 w-20 animate-pulse rounded-md bg-muted" /> // Skeleton for loading state
+          <div className="h-8 w-20 animate-pulse rounded-md bg-muted/50" /> 
         )}
       </div>
     </header>

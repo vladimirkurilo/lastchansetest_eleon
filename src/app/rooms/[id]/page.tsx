@@ -5,11 +5,10 @@ import type { Room } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { BedDouble, Users, Tag, Wifi, Wind, Tv, UtensilsCrossed, CheckCircle2 } from "lucide-react";
+import { BedDouble, Users, Tag, Wifi, Wind, Tv, UtensilsCrossed, CheckCircle2, ChevronLeft } from "lucide-react";
 import { RoomBookingForm } from "@/components/rooms/RoomBookingForm";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
 
 // This would typically be a server component fetching data
 async function getRoomById(id: string): Promise<Room | undefined> {
@@ -52,7 +51,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
-      <Button variant="outline" asChild className="mb-6">
+      <Button variant="outline" asChild className="mb-6 bg-card/80 hover:bg-card">
         <Link href="/rooms">
           <ChevronLeft className="mr-2 h-4 w-4" />
           Back to All Rooms
@@ -61,7 +60,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <Card className="overflow-hidden shadow-xl">
+          <Card className="overflow-hidden">
             <CardHeader className="p-0">
               <Image
                 src={room.imageUrl}
@@ -99,7 +98,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="sticky top-24 shadow-xl">
+          <Card className="sticky top-24">
             <CardHeader>
               <CardTitle className="text-2xl text-center">Book Your Stay</CardTitle>
             </CardHeader>
@@ -123,12 +122,12 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   const room = await getRoomById(params.id);
   if (!room) {
     return {
-      title: 'Room Not Found | SmartStay',
+      title: 'Room Not Found | ELEON',
     };
   }
   return {
-    title: `${room.name} | SmartStay`,
-    description: `Details and booking for ${room.name}. ${room.description.substring(0, 160)}`,
+    title: `${room.name} | ELEON`,
+    description: `Details and booking for ${room.name} at ELEON. ${room.description.substring(0, 150)}`,
   };
 }
 
@@ -138,4 +137,3 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 //     id: room.id,
 //   }));
 // }
-

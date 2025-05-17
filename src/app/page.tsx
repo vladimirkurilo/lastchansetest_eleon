@@ -8,10 +8,10 @@ import Image from 'next/image';
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-br from-primary to-indigo-600 text-primary-foreground">
+      <section className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-br from-primary via-primary/70 to-secondary text-primary-foreground">
         <Image 
           src="https://placehold.co/1920x1080.png" 
-          alt="Modern Hotel Lobby" 
+          alt="Modern Hotel Lobby ELEON" 
           fill 
           style={{ objectFit: 'cover' }}
           className="opacity-20"
@@ -19,10 +19,10 @@ export default function HomePage() {
         />
         <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Welcome to SmartStay
+            Welcome to ELEON
           </h1>
           <p className="mx-auto mt-4 max-w-[700px] text-lg md:text-xl">
-            Experience the future of hospitality. Book rooms, unlock doors, and control your environment, all from your smartphone.
+            Experience the future of hospitality. Book rooms, unlock doors, and control your environment, all from your smartphone with ELEON.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
@@ -38,7 +38,7 @@ export default function HomePage() {
       <section className="py-12 md:py-20 lg:py-28 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-bold tracking-tighter text-center sm:text-4xl md:text-5xl text-foreground">
-            Why Choose SmartStay?
+            Why Choose ELEON?
           </h2>
           <p className="mx-auto mt-4 max-w-[900px] text-center text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
             We blend cutting-edge technology with unparalleled comfort to redefine your hotel experience.
@@ -70,7 +70,7 @@ export default function HomePage() {
               For Hotel Administrators
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Manage your property efficiently with our comprehensive admin dashboard. Monitor room statuses, oversee bookings, and ensure smooth operations.
+              Manage your property efficiently with our comprehensive admin dashboard. Monitor room statuses, oversee bookings, and ensure smooth operations with ELEON.
             </p>
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
               <Link href="/admin/dashboard">Admin Dashboard</Link>
@@ -81,7 +81,7 @@ export default function HomePage() {
               src="https://placehold.co/550x310.png"
               width={550}
               height={310}
-              alt="Admin Dashboard Preview"
+              alt="Admin Dashboard Preview for ELEON"
               className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
               data-ai-hint="dashboard interface"
             />

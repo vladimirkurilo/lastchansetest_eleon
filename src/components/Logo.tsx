@@ -10,7 +10,7 @@ export function Logo({ className }: LogoProps) {
   return (
     <Link href="/" className={`flex items-center gap-2 text-2xl font-bold text-primary ${className}`}>
       <Hotel className="h-8 w-8" />
-      <span>SmartStay</span>
+      <span>ELEON</span>
     </Link>
   );
 }

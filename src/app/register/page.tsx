@@ -57,7 +57,7 @@ export default function RegisterPage() {
         <CardHeader className="text-center">
           <UserPlus className="mx-auto h-12 w-12 text-primary" />
           <CardTitle className="mt-4 text-3xl font-bold">Create Your Account</CardTitle>
-          <CardDescription>Join SmartStay and enjoy a seamless hotel experience.</CardDescription>
+          <CardDescription>Join ELEON and enjoy a seamless hotel experience.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">

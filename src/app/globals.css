@@ -3,102 +3,104 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
 }
 
 @layer base {
   :root {
-    --background: 0 0% 96.1%; /* Light Gray #F5F5F5 */
-    --foreground: 231 48% 15%; /* Darker Blue for text */
+    /* Modern, Laconic Light Theme for ELEON */
+    --background: 210 30% 97%; /* Very light, cool grey */
+    --foreground: 220 15% 25%; /* Dark, desaturated blue/grey for text */
 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 231 48% 15%; /* Darker Blue text on cards */
+    --card: 210 30% 100% / 0.65; /* White, semi-transparent for frosted glass effect */
+    --card-foreground: 220 15% 25%; /* Dark text on cards */
 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 231 48% 15%; /* Darker Blue text on popovers */
+    --popover: 210 30% 100% / 0.8; /* Popovers also semi-transparent */
+    --popover-foreground: 220 15% 25%;
 
-    --primary: 231 48% 48%; /* Deep Blue #3F51B5 */
-    --primary-foreground: 0 0% 100%; /* White */
+    --primary: 195 65% 40%; /* Sophisticated deep teal/blue */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
 
-    --secondary: 231 48% 90%; /* Lighter Blue */
-    --secondary-foreground: 231 48% 30%; /* Medium Blue */
+    --secondary: 210 25% 90%; /* Lighter, muted blue/grey */
+    --secondary-foreground: 195 65% 30%; /* Darker teal for secondary text */
 
-    --muted: 0 0% 93%; /* Very light gray */
-    --muted-foreground: 0 0% 45.1%; /* Standard gray */
+    --muted: 210 25% 94%; /* Very light grey for muted backgrounds */
+    --muted-foreground: 220 10% 50%; /* Standard grey for muted text */
 
-    --accent: 36 100% 50%; /* Vibrant Orange #FF9800 */
-    --accent-foreground: 0 0% 100%; /* White */
+    --accent: 40 90% 58%; /* Muted gold/amber */
+    --accent-foreground: 220 15% 15%; /* Dark text on accent for contrast */
 
-    --destructive: 0 84.2% 60.2%; /* Default destructive */
-    --destructive-foreground: 0 0% 98%; /* Default destructive foreground */
+    --destructive: 0 75% 55%; 
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 89.8%; /* Lighter gray for borders */
-    --input: 0 0% 89.8%; /* Lighter gray for input backgrounds */
-    --ring: 231 48% 48%; /* Deep Blue for focus rings */
+    --border: 210 20% 85%; /* Softer border color */
+    --input: 210 20% 92% / 0.7; /* Semi-transparent input background */
+    --ring: 195 65% 45%; /* Primary color for focus rings */
     
-    --chart-1: 231 48% 48%;
-    --chart-2: 36 100% 50%;
-    --chart-3: 231 48% 65%;
-    --chart-4: 36 100% 65%;
-    --chart-5: 231 48% 80%;
+    --chart-1: 195 65% 40%;
+    --chart-2: 40 90% 58%;
+    --chart-3: 195 65% 60%;
+    --chart-4: 40 90% 70%;
+    --chart-5: 195 65% 75%;
 
-    --radius: 0.5rem;
+    --radius: 0.3rem; /* Slightly smaller radius for a sharper look */
 
-    /* Sidebar specific theme */
-    --sidebar-background: 0 0% 100%; /* White */
-    --sidebar-foreground: 231 48% 15%; /* Darker Blue */
-    --sidebar-primary: 231 48% 48%; /* Deep Blue */
-    --sidebar-primary-foreground: 0 0% 100%; /* White */
-    --sidebar-accent: 36 100% 50%; /* Vibrant Orange */
-    --sidebar-accent-foreground: 0 0% 100%; /* White */
-    --sidebar-border: 0 0% 89.8%; /* Lighter gray */
-    --sidebar-ring: 231 48% 48%; /* Deep Blue */
+    /* Sidebar specific theme - adjust to match new aesthetic */
+    --sidebar-background: 220 15% 18% / 0.85; /* Darker, semi-transparent for sidebar */
+    --sidebar-foreground: 210 20% 90%; 
+    --sidebar-primary: 195 60% 60%; 
+    --sidebar-primary-foreground: 220 15% 10%;
+    --sidebar-accent: 40 85% 65%;
+    --sidebar-accent-foreground: 220 15% 15%;
+    --sidebar-border: 220 15% 25%;
+    --sidebar-ring: 195 60% 60%;
   }
 
   .dark {
-    --background: 231 48% 10%; /* Dark Blue */
-    --foreground: 0 0% 96.1%; /* Light Gray */
+    /* Modern, Laconic Dark Theme for ELEON */
+    --background: 220 15% 12%; /* Very dark, desaturated blue/grey */
+    --foreground: 210 20% 90%; /* Light grey/off-white text */
 
-    --card: 231 48% 15%; /* Slightly Lighter Dark Blue */
-    --card-foreground: 0 0% 96.1%;
+    --card: 220 15% 18% / 0.65; /* Dark, semi-transparent for frosted glass effect */
+    --card-foreground: 210 20% 90%;
 
-    --popover: 231 48% 15%;
-    --popover-foreground: 0 0% 96.1%;
+    --popover: 220 15% 15% / 0.8; 
+    --popover-foreground: 210 20% 90%;
 
-    --primary: 231 48% 65%; /* Lighter Deep Blue for dark mode */
-    --primary-foreground: 231 48% 10%; /* Dark Blue for contrast */
+    --primary: 195 60% 60%; /* Lighter teal/blue for dark mode */
+    --primary-foreground: 220 15% 10%; /* Dark text for contrast on primary */
 
-    --secondary: 231 48% 25%; /* Darker mid blue */
-    --secondary-foreground: 0 0% 90%; /* Lighter gray */
+    --secondary: 220 15% 25%; /* Darker mid-grey/blue */
+    --secondary-foreground: 210 20% 80%; /* Lighter grey for secondary text */
 
-    --muted: 231 48% 20%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted: 220 15% 20%; 
+    --muted-foreground: 210 15% 65%;
 
-    --accent: 36 100% 60%; /* Lighter Orange for dark mode */
-    --accent-foreground: 231 48% 10%; /* Dark Blue for contrast */
+    --accent: 40 85% 65%; /* Lighter gold/amber for dark mode */
+    --accent-foreground: 220 15% 15%;
 
-    --destructive: 0 70% 50%; /* Adjusted destructive */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 231 48% 25%;
-    --input: 231 48% 25%;
-    --ring: 231 48% 65%;
+    --border: 220 15% 25%;
+    --input: 220 15% 22% / 0.7;
+    --ring: 195 60% 60%;
     
-    --chart-1: 231 48% 65%;
-    --chart-2: 36 100% 60%;
-    --chart-3: 231 48% 50%;
-    --chart-4: 36 100% 50%;
-    --chart-5: 231 48% 35%;
+    --chart-1: 195 60% 60%;
+    --chart-2: 40 85% 65%;
+    --chart-3: 195 60% 50%;
+    --chart-4: 40 85% 55%;
+    --chart-5: 195 60% 35%;
 
     /* Dark Sidebar specific theme */
-    --sidebar-background: 231 48% 8%; /* Very Dark Blue */
-    --sidebar-foreground: 0 0% 96.1%; /* Light Gray */
-    --sidebar-primary: 231 48% 65%; /* Lighter Deep Blue */
-    --sidebar-primary-foreground: 231 48% 10%; /* Dark Blue */
-    --sidebar-accent: 36 100% 60%; /* Lighter Orange */
-    --sidebar-accent-foreground: 231 48% 10%; /* Dark Blue */
-    --sidebar-border: 231 48% 20%; /* Darker mid blue */
-    --sidebar-ring: 231 48% 65%; /* Lighter Deep Blue */
+    --sidebar-background: 220 20% 10% / 0.85; /* Very Dark, semi-transparent */
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 195 60% 60%;
+    --sidebar-primary-foreground: 220 15% 10%;
+    --sidebar-accent: 40 85% 65%;
+    --sidebar-accent-foreground: 220 15% 15%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 195 60% 60%;
   }
 }
 

@@ -42,7 +42,7 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <LogIn className="mx-auto h-12 w-12 text-primary" />
           <CardTitle className="mt-4 text-3xl font-bold">Welcome Back!</CardTitle>
-          <CardDescription>Sign in to access your SmartStay account.</CardDescription>
+          <CardDescription>Sign in to access your ELEON account.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
