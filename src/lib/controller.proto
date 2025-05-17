@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+// option go_package = "./;api"; // Not relevant for JS/TS
+
+enum Statuses {
+    Ok = 0;
+    Error = 1;
+}
+
+enum LightStatesEnum { // Renamed to avoid conflict with TypeScript type
+    On = 0;
+    Off = 1;
+}
+
+enum DoorLockStatesEnum { // Renamed to avoid conflict with TypeScript type
+    Open = 0;
+    Close = 1;
+}
+
+enum ChannelStatesEnum { // Renamed to avoid conflict with TypeScript type
+    ChannelOn = 0;
+    ChannelOff = 1;
+}
+
+// This enum matches ControllerCommands in src/lib/types.ts
+enum DeviceControlCommands {
+    LightOn = 0;
+    LightOff = 1;
+    DoorLockOpen = 2;
+    DoorLockClose = 3;
+    Channel1On = 4;
+    Channel1Off = 5;
+    Channel2On = 6;
+    Channel2Off = 7;
+}
+
+message IdentifyRequest {
+    string Token = 1;
+}
+
+message GetStateRequest {} // Renamed from GetState to avoid conflict
+
+message GetInfoRequest {} // Renamed from GetInfo to avoid conflict
+
+message SetStateRequest { // Renamed from SetState to avoid conflict
+    DeviceControlCommands command = 1; // Changed from 'state' to 'command' for clarity and consistency
+}
+
+message StateResponse { // Renamed from State to avoid conflict
+    LightStatesEnum light_on = 1;
+    DoorLockStatesEnum door_lock = 2;
+    ChannelStatesEnum channel_1 = 3;
+    ChannelStatesEnum channel_2 = 4;
+    float temperature = 5;
+    float pressure = 6;
+    float humidity = 7;
+}
+
+message InfoResponse { // Renamed from Info to avoid conflict
+    string ip = 1;
+    string mac = 2;
+    string ble_name = 3;
+    string token = 4;
+}
+
+message ClientMessage {
+    oneof message {
+        GetInfoRequest get_info = 1;
+        SetStateRequest set_state = 2;
+        GetStateRequest get_state = 3;
+    }
+}
+
+message ControllerResponse {
+    oneof response {
+        InfoResponse info = 1;
+        StateResponse state = 2;
+        Statuses status = 3;
+    }
+}

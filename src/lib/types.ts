@@ -31,7 +31,7 @@ export interface Booking {
   roomImageUrl?: string; // For display purposes
 }
 
-// Mirrored from protobuf definitions
+// These enums match the UI logic and controller responses (0 for On/Open)
 export enum LightStates { On = 0, Off = 1 }
 export enum DoorLockStates { Open = 0, Close = 1 }
 export enum ChannelStates { ChannelOn = 0, ChannelOff = 1 }
@@ -44,9 +44,10 @@ export interface RoomControllerState {
   temperature: number;
   pressure: number;
   humidity: number;
+  error?: string; // Optional error field for UI
 }
 
-// For set_state command
+// These command enum values MUST match the 'DeviceControlCommands' enum in controller.proto
 export enum ControllerCommands {
   LightOn = 0,
   LightOff = 1,
