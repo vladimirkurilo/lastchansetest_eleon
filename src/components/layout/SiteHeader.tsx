@@ -92,7 +92,7 @@ export function SiteHeader() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={`https://placehold.co/40x40.png?text=${getInitials(user.name)}`} alt={user.name || user.email} data-ai-hint="user avatar" />
+                  <AvatarImage src="https://placehold.co/40x40.png" alt={user.name || user.email} data-ai-hint="user avatar" />
                   <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                 </Avatar>
               </Button>

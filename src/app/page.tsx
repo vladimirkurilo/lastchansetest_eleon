@@ -12,8 +12,8 @@ export default function HomePage() {
         <Image 
           src="https://placehold.co/1920x1080.png" 
           alt="Modern Hotel Lobby" 
-          layout="fill" 
-          objectFit="cover" 
+          fill 
+          style={{ objectFit: 'cover' }}
           className="opacity-20"
           data-ai-hint="hotel lobby luxury"
         />

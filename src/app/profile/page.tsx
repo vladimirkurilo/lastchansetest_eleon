@@ -78,7 +78,7 @@ export default function ProfilePage() {
       <Card className="shadow-xl">
         <CardHeader className="items-center text-center">
           <Avatar className="h-24 w-24 mb-4 ring-4 ring-primary ring-offset-2 ring-offset-background">
-            <AvatarImage src={`https://placehold.co/96x96.png?text=${getInitials(user.name)}`} alt={user.name || user.email} data-ai-hint="person portrait" />
+            <AvatarImage src="https://placehold.co/96x96.png" alt={user.name || user.email} data-ai-hint="person portrait" />
             <AvatarFallback className="text-3xl">{getInitials(user.name)}</AvatarFallback>
           </Avatar>
           <CardTitle className="text-3xl font-bold">{user.name || "User Profile"}</CardTitle>

@@ -5,7 +5,7 @@ import type { Room } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { BedDouble, Users, Tag, Wifi, Wind, Tv, UtensilsCross, CheckCircle2 } from "lucide-react";
+import { BedDouble, Users, Tag, Wifi, Wind, Tv, UtensilsCrossed, CheckCircle2 } from "lucide-react";
 import { RoomBookingForm } from "@/components/rooms/RoomBookingForm";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -28,7 +28,7 @@ function AmenityIcon({ amenity }: AmenityIconProps) {
   if (lowerAmenity.includes("wi-fi")) return <Wifi className="h-5 w-5 text-primary" />;
   if (lowerAmenity.includes("air conditioning") || lowerAmenity.includes("a/c")) return <Wind className="h-5 w-5 text-primary" />;
   if (lowerAmenity.includes("tv") || lowerAmenity.includes("television")) return <Tv className="h-5 w-5 text-primary" />;
-  if (lowerAmenity.includes("mini bar") || lowerAmenity.includes("kitchen")) return <UtensilsCross className="h-5 w-5 text-primary" />;
+  if (lowerAmenity.includes("mini bar") || lowerAmenity.includes("kitchen")) return <UtensilsCrossed className="h-5 w-5 text-primary" />;
   return <CheckCircle2 className="h-5 w-5 text-primary" />;
 }
 

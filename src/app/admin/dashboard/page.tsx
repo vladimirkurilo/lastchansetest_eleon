@@ -159,8 +159,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-export const metadata = {
-  title: 'Admin Dashboard | SmartStay',
-  description: 'Manage hotel room inventory and statuses.',
-};

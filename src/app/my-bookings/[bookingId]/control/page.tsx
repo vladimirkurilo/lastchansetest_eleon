@@ -108,7 +108,7 @@ export default function RoomControlPage() {
           <div className="bg-card p-6 rounded-lg shadow-lg">
             {roomImageUrl && (
                 <div className="relative aspect-video w-full mb-4 rounded-md overflow-hidden">
-                    <Image src={roomImageUrl} alt={roomName} layout="fill" objectFit="cover" data-ai-hint="hotel room comfortable" />
+                    <Image src={roomImageUrl} alt={roomName} fill style={{ objectFit: 'cover' }} data-ai-hint="hotel room comfortable" />
                 </div>
             )}
             <h1 className="text-3xl font-bold text-primary mb-2">{roomName}</h1>
@@ -133,4 +133,3 @@ export default function RoomControlPage() {
 //     description: `Control your room environment for booking ${params.bookingId}.`,
 //   };
 // }
-

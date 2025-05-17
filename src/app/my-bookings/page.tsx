@@ -99,8 +99,8 @@ export default function MyBookingsPage() {
                   <Image
                     src={booking.roomDetails.imageUrl}
                     alt={booking.roomDetails.name}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: 'cover' }}
                     className="rounded-t-lg"
                     data-ai-hint="hotel room view"
                   />
@@ -139,8 +139,3 @@ export default function MyBookingsPage() {
     </div>
   );
 }
-
-export const metadata = {
-  title: 'My Bookings | SmartStay',
-  description: 'View and manage your hotel bookings with SmartStay.',
-};
